@@ -1,0 +1,11 @@
+{
+    "receiver": "team-A",
+    "status": "firing",
+    "commonLabels": {
+        "app": "foo",
+        "version": "1.0.0"
+    },
+    "commonAnnotations": {
+        "playbook": "https://foo.bar/playbook.md"
+    }
+}

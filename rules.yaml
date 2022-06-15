@@ -1,0 +1,11 @@
+groups:
+  - name: testGroup
+    rules:
+      - alert: test
+        expr: avg_over_time(up{job="prometheus"}[5m]) < 0.5
+        labels:
+          severity: critical
+          team: team-A
+        annotations:
+          title: Test alert
+          playbook: http://foo.bar/nonexisting/playbook

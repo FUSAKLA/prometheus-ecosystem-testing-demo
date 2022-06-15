@@ -1,0 +1,34 @@
+prometheus:
+  url: http://demo.robustperception.io:9090
+
+validationRules:
+  - name: check-severity-label
+    scope: Alert
+    validations:
+      - type: hasLabels
+        params:
+          labels: [ "severity" ]
+      - type: labelHasAllowedValue
+        params:
+          label: "severity"
+          allowedValues: [ "info", "warning", "critical" ]
+      - type: expressionCanBeEvaluated
+        params:
+          timeSeriesLimit: 20
+          evaluationDurationLimit: 10s
+      - type: expressionUsesExistingLabels
+      - type: expressionSelectorsMatchesAnything
+      - type: expressionDoesNotUseOlderDataThan
+        params:
+          limit: "6h"
+  
+  - name: check-playbook-annotation
+    scope: Alert
+    validations:
+      - type: hasAnyOfAnnotations
+        params:
+          annotations: [ "playbook" ]
+      - type: annotationIsValidURL
+        params:
+          annotation: "link"
+          resolveUrl: true

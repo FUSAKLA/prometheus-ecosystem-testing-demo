@@ -1,0 +1,39 @@
+rule_files:
+    - rules.yaml
+
+evaluation_interval: 1m
+
+tests:
+    - interval: 1m
+      # Series data.
+      input_series:
+          - series: 'up{job="prometheus", instance="localhost:9090"}'
+            values: '1 1 1 1 1 1 1 1 0 0 0 0 0 0 0 0' 
+          - series: 'up{job="node_exporter", instance="localhost:9100"}'
+            values: '1+0x16 ' # 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1 1
+
+      # Unit test for alerting rules.
+      alert_rule_test:
+          - eval_time: 1m
+            alertname: test
+            exp_alerts: []
+          - eval_time: 12m
+            alertname: test
+            exp_alerts:
+              - exp_labels:
+                  severity: critical
+                  team: team-A
+                  job: prometheus
+                  instance: localhost:9090
+                exp_annotations:
+                  title: Test alert
+                  playbook: http://foo.bar/nonexisting/playbook
+
+      # Unit tests for promql expressions.
+      promql_expr_test:
+          # Unit test 1.
+          - expr: count_over_time(up{job="prometheus"}[5m])
+            eval_time: 5m
+            exp_samples:
+                - labels: '{job="prometheus",instance="localhost:9090"}'
+                  value: 6

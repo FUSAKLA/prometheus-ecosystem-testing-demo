@@ -1,0 +1,3 @@
+# HELP test_total Testing counter
+# TYPE test_total counter
+test_total 1
