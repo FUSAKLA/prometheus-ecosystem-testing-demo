@@ -1,6 +1,0 @@
-{{- define "test" -}}
-receiver: {{.Receiver}}
-status: {{.Status}}
-playbook: {{.CommonAnnotations.Playbook}}
-Labels: {{- range $i, $e := .CommonLabels.SortedPairs }}{{ $i }}: {{ $e }},{{- end }}
-{{ end }}
